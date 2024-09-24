@@ -68,6 +68,8 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
   <body>
     <input type="file" id="file-input" accept=".zip" />
+    <input id="loaction" /> 地址
+    <input type="radio" id="radio" name="water" value="1" /> 黑夜
 
     <div class="wrap" id="wrap">
       <img src="./image.jpeg" id="origin" />
@@ -76,8 +78,8 @@
         <div class="main">12:56</div>
         <div class="yellow"></div>
         <div class="sub">
-          <div>2022-01-02</div>
-          <div>星期日 晴 6°C</div>
+          <div class="date">2022-01-02</div>
+          <div class="Weather">星期日 晴 6°C</div>
         </div>
       </div>
       <div class="loaction">六安市•裕安区</div>
@@ -86,6 +88,43 @@
       const wrap = document.getElementById("wrap");
       const origin = document.getElementById("origin");
       const fileInput = document.getElementById("file-input");
+      const radio = document.getElementById("radio");
+      const loaction = document.getElementById("loaction");
+
+      function getChineseDayOfWeek(dateString) {
+        const days = [
+          "星期日",
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五",
+          "星期六",
+        ];
+        const date = new Date(dateString);
+        const dayOfWeek = date.getDay();
+
+        return days[dayOfWeek];
+      }
+
+      function generateRandomWeather() {
+        const weatherTypes = ["晴", "多云"]; // 定义天气类型
+        const temperature = Math.floor(Math.random() * 30); // 生成 -10°C 到 20°C 之间的随机温度
+
+        const randomWeather =
+          weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+        return `${randomWeather} ${temperature}°C`;
+      }
+
+      radio.onclick = () => {
+        if (radio.value === "1") {
+          radio.value = "2";
+          radio.checked = true;
+        } else {
+          radio.value = "1";
+          radio.checked = false;
+        }
+      };
 
       function addWater(url) {
         origin.onload = function () {
@@ -106,6 +145,52 @@
         origin.src = url;
       }
 
+      function generateRandomEveningTime() {
+        const hours = Math.floor(Math.random() * 4) + 19; // 生成 19 到 22 之间的随机小时数
+        const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
+
+        const formattedHours = hours < 10 ? "0" + hours : hours;
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+        return `${formattedHours}:${formattedMinutes}`;
+      }
+
+      function generateRandomTime() {
+        const hours = Math.floor(Math.random() * 11) + 7; // 生成 7 到 17 之间的随机小时数
+        const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
+
+        const period = hours < 12 ? "AM" : "PM";
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+        return `${formattedHours}:${formattedMinutes} ${period}`;
+      }
+
+      function parseCustomTime(input) {
+        const parts = input.split(".");
+        if (parts.length === 2) {
+          const year = parseInt(parts[0], 10);
+          const month = parseInt(parts[1], 10);
+
+          let day = null;
+          let period = null;
+
+          if (parts[2].endsWith("b")) {
+            day = parseInt(parts[2].slice(0, -1), 10);
+            period = "PM";
+          } else {
+            day = parseInt(parts[2], 10);
+            period = "AM";
+          }
+
+          if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+            return `${year}-${month}-${day}`;
+          }
+        }
+
+        return null;
+      }
+
       fileInput.addEventListener("change", function () {
         const file = fileInput.files[0];
         if (file) {
@@ -119,9 +204,28 @@
                     .file(zipEntry.name)
                     .async("blob")
                     .then(function (blob) {
-                        const url = URL.createObjectURL(blob);
-                        console.log(url);
-                        addWater(url);
+                      const name = zipEntry.name.split("/")?.pop()?.split(".");
+                      const url = URL.createObjectURL(blob);
+
+                      // 时间
+                      document.getElementsByClassName("main")[0].innerText =
+                        radio.value === "1"
+                          ? generateRandomEveningTime()
+                          : generateRandomTime();
+                      // 日期
+                      const parsedTime = parseCustomTime(input);
+                      document.getElementsByClassName("date")[0].innerText =
+                        parsedTime;
+                      // 生成一个随机天气信息
+                      document.getElementsByClassName(
+                        "Weather"
+                      )[0].innerText = `${getChineseDayOfWeek(
+                        parsedTime
+                      )} ${generateRandomWeather()}`;
+                      document.getElementsByClassName("loaction")[0].innerText =
+                        loaction?.value;
+
+                      addWater(url, name);
                     });
                 }
               });
