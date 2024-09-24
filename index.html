@@ -167,7 +167,7 @@
       }
 
       function parseCustomTime(input) {
-        const parts = input.split(".");
+        const parts = input?.split(".");
         if (parts.length === 2) {
           const year = parseInt(parts[0], 10);
           const month = parseInt(parts[1], 10);
@@ -213,7 +213,7 @@
                           ? generateRandomEveningTime()
                           : generateRandomTime();
                       // 日期
-                      const parsedTime = parseCustomTime(input);
+                      const parsedTime = parseCustomTime(name);
                       document.getElementsByClassName("date")[0].innerText =
                         parsedTime;
                       // 生成一个随机天气信息
@@ -225,7 +225,7 @@
                       document.getElementsByClassName("loaction")[0].innerText =
                         loaction?.value;
 
-                      addWater(url, name);
+                      addWater(url);
                     });
                 }
               });
