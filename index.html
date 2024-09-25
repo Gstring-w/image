@@ -224,7 +224,7 @@
                       document.getElementsByClassName("loaction")[0].innerText =
                         loaction?.value;
 
-                      addWater(url, name);
+                      addWater(url, zipEntry.name.split("/")?.pop());
                     });
                 }
               });
