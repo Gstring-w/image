@@ -128,11 +128,11 @@
 
       function addWater(url,name) {
         origin.onload = function () {
-          wrap.style.width = origin?.width + "px";
-          wrap.style.height = origin?.height + "px";
+          wrap.style.width = origin?.width * 10 + "px";
+          wrap.style.height = origin?.height * 10 + "px";
 
-          origin.style.width = origin?.width + "px";
-          origin.style.height = origin?.height + "px";
+          origin.style.width = origin?.width * 10 + "px";
+          origin.style.height = origin?.height * 10 + "px";
           domtoimage
             .toPng(wrap)
             .then(function (dataUrl) {
