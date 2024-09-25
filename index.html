@@ -67,12 +67,8 @@
   </head>
   <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
   <body>
-    <input type="file" id="file-input" accept=".zip" />
-    <input id="loaction" /> 地址
-    <input type="radio" id="radio" name="water" value="1" /> 黑夜
-
     <div class="wrap" id="wrap">
-      <img src="./image.jpeg" id="origin" />
+      <img src="" id="origin" />
       <img src="./water.png" class="water" />
       <div class="time">
         <div class="main">12:56</div>
@@ -84,12 +80,52 @@
       </div>
       <div class="loaction">六安市•裕安区</div>
     </div>
+
+    <input type="file" id="file-input" accept=".zip" />
+    <input id="loaction" /> 地址
+    <input type="radio" id="radio" name="water" value="1" /> 黑夜
+    <button onclick="submit" id="button">提交</button>
     <script>
       const wrap = document.getElementById("wrap");
       const origin = document.getElementById("origin");
       const fileInput = document.getElementById("file-input");
       const radio = document.getElementById("radio");
       const loaction = document.getElementById("loaction");
+
+      document.getElementById("button").onclick = submit;
+
+      const arr = [];
+
+      async function submit() {
+        for (let i = 0; i < arr.length; i++) {
+          const { url, name: fileName } = arr[i];
+          const name = fileName.split("/")?.pop()?.split(".");
+          // 时间
+          document.getElementsByClassName("main")[0].innerText =
+            radio.value !== "1"
+              ? generateRandomEveningTime()
+              : generateRandomTime();
+          // 日期
+          console.log(fileName.split("/")?.pop(), fileName);
+          const parsedTime = parseCustomTime(fileName.split("/")?.pop());
+          if (!parsedTime) {
+            console.error("日期解析失败", name);
+            return;
+          }
+
+          document.getElementsByClassName("date")[0].innerText = parsedTime;
+          // 生成一个随机天气信息
+          document.getElementsByClassName(
+            "Weather"
+          )[0].innerText = `${getChineseDayOfWeek(
+            parsedTime
+          )} ${generateRandomWeather()}`;
+          document.getElementsByClassName("loaction")[0].innerText =
+            loaction?.value;
+
+          await addWater(url, fileName.split("/")?.pop());
+        }
+      }
 
       function getChineseDayOfWeek(dateString) {
         const days = [
@@ -127,25 +163,29 @@
       };
 
       function addWater(url, name) {
-        origin.onload = function () {
-          wrap.style.width = origin?.width + "px";
-          wrap.style.height = origin?.height + "px";
+        return new Promise((resolve, reject) => {
+          origin.onload = function () {
+            wrap.style.width = 1000 + "px";
+            wrap.style.height = "auto";
 
-          origin.style.width = origin?.width + "px";
-          origin.style.height = origin?.height + "px";
-          domtoimage
-            .toPng(wrap)
-            .then(function (dataUrl) {
-              const a = document.createElement("a");
-              a.href = dataUrl;
-              a.download = name;
-              a.click();
-            })
-            .catch(function (error) {
-              console.error("oops, something went wrong!", error);
-            });
-        };
-        origin.src = url;
+            origin.style.width = 1000 + "px";
+            origin.style.height = "auto";
+
+            domtoimage
+              .toPng(wrap)
+              .then(function (dataUrl) {
+                const a = document.createElement("a");
+                a.href = dataUrl;
+                a.download = name;
+                a.click();
+                resolve();
+              })
+              .catch(function (error) {
+                console.error("oops, something went wrong!", error);
+              });
+          };
+          origin.src = url;
+        });
       }
 
       function generateRandomEveningTime() {
@@ -166,10 +206,11 @@
         const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
         const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
 
-        return `${formattedHours}:${formattedMinutes} ${period}`;
+        return `${formattedHours}:${formattedMinutes}`;
       }
 
       function parseCustomTime(input) {
+        console.log(input);
         // 定义正则表达式模式
         var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
 
@@ -197,32 +238,9 @@
                     .file(zipEntry.name)
                     .async("blob")
                     .then(function (blob) {
-                      const name = zipEntry.name.split("/")?.pop()?.split(".");
                       const url = URL.createObjectURL(blob);
-
-                      // 时间
-                      document.getElementsByClassName("main")[0].innerText =
-                        radio.value !== "1"
-                          ? generateRandomEveningTime()
-                          : generateRandomTime();
-                      // 日期
-                      const parsedTime = parseCustomTime(name);
-                      if (!parsedTime) {
-                        console.error("日期解析失败", name);
-                        return;
-                      }
-                      document.getElementsByClassName("date")[0].innerText =
-                        parsedTime;
-                      // 生成一个随机天气信息
-                      document.getElementsByClassName(
-                        "Weather"
-                      )[0].innerText = `${getChineseDayOfWeek(
-                        parsedTime
-                      )} ${generateRandomWeather()}`;
-                      document.getElementsByClassName("loaction")[0].innerText =
-                        loaction?.value;
-
-                      addWater(url, zipEntry.name.split("/")?.pop());
+                      arr.push({ name: zipEntry.name, url });
+                      console.log(arr);
                     });
                 }
               });
@@ -231,12 +249,6 @@
           reader.readAsArrayBuffer(file);
         }
       });
-
-      wrap.style.width = origin?.width + "px";
-      wrap.style.height = origin?.height + "px";
-
-      origin.style.width = origin?.width + "px";
-      origin.style.height = origin?.height + "px";
     </script>
   </body>
 </html>
