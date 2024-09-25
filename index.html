@@ -126,13 +126,13 @@
         }
       };
 
-      function addWater(url,name) {
+      function addWater(url, name) {
         origin.onload = function () {
-          wrap.style.width = origin?.width * 10 + "px";
-          wrap.style.height = origin?.height * 10 + "px";
+          wrap.style.width = origin?.width + "px";
+          wrap.style.height = origin?.height + "px";
 
-          origin.style.width = origin?.width * 10 + "px";
-          origin.style.height = origin?.height * 10 + "px";
+          origin.style.width = origin?.width + "px";
+          origin.style.height = origin?.height + "px";
           domtoimage
             .toPng(wrap)
             .then(function (dataUrl) {
@@ -209,7 +209,7 @@
                           : generateRandomTime();
                       // 日期
                       const parsedTime = parseCustomTime(name);
-                      if(!parsedTime) {
+                      if (!parsedTime) {
                         console.error("日期解析失败", name);
                         return;
                       }
@@ -233,6 +233,12 @@
           reader.readAsArrayBuffer(file);
         }
       });
+
+      wrap.style.width = origin?.width + "px";
+      wrap.style.height = origin?.height + "px";
+
+      origin.style.width = origin?.width + "px";
+      origin.style.height = origin?.height + "px";
     </script>
   </body>
 </html>
