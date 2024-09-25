@@ -128,8 +128,11 @@
 
       function addWater(url) {
         origin.onload = function () {
-          wrap.style.width = origin?.width + "px";
-          wrap.style.height = origin?.height + "px";
+          wrap.style.width = origin?.width / window.devicePixelRatio + "px";
+          wrap.style.height = origin?.height / window.devicePixelRatio + "px";
+
+          origin.style.width = origin?.width / window.devicePixelRatio + "px";
+          origin.style.height = origin?.height / window.devicePixelRatio + "px";
           domtoimage
             .toPng(wrap)
             .then(function (dataUrl) {
@@ -167,28 +170,20 @@
       }
 
       function parseCustomTime(input) {
-        const parts = input?.split(".");
-        if (parts.length === 2) {
-          const year = parseInt(parts[0], 10);
-          const month = parseInt(parts[1], 10);
+        var filename = "2024.3.9b(a).jpg";
 
-          let day = null;
-          let period = null;
+        // 定义正则表达式模式
+        var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
 
-          if (parts[2].endsWith("b")) {
-            day = parseInt(parts[2].slice(0, -1), 10);
-            period = "PM";
-          } else {
-            day = parseInt(parts[2], 10);
-            period = "AM";
-          }
+        // 在文件名中搜索匹配的日期部分
+        var match = filename.match(pattern);
 
-          if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-            return `${year}-${month}-${day}`;
-          }
+        let parts;
+        // 如果有匹配的结果，则提取日期部分
+        if (match) {
+          var date = match[0];
+          return data;
         }
-
-        return null;
       }
 
       fileInput.addEventListener("change", function () {
@@ -214,6 +209,10 @@
                           : generateRandomTime();
                       // 日期
                       const parsedTime = parseCustomTime(name);
+                      if(!parsedTime) {
+                        console.error("日期解析失败", name);
+                        return;
+                      }
                       document.getElementsByClassName("date")[0].innerText =
                         parsedTime;
                       // 生成一个随机天气信息
