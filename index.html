@@ -202,7 +202,7 @@
 
                       // 时间
                       document.getElementsByClassName("main")[0].innerText =
-                        radio.value === "1"
+                        radio.value !== "1"
                           ? generateRandomEveningTime()
                           : generateRandomTime();
                       // 日期
