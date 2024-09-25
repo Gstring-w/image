@@ -170,13 +170,11 @@
       }
 
       function parseCustomTime(input) {
-        var filename = "2024.3.9b(a).jpg";
-
         // 定义正则表达式模式
         var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
 
         // 在文件名中搜索匹配的日期部分
-        var match = filename.match(pattern);
+        var match = input.match(pattern);
 
         let parts;
         // 如果有匹配的结果，则提取日期部分
