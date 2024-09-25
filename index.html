@@ -68,7 +68,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
   <body>
     <div class="wrap" id="wrap">
-      <img src="" id="origin" />
+      <img src="./image.jpeg" id="origin" />
       <img src="./water.png" class="water" />
       <div class="time">
         <div class="main">12:56</div>
@@ -78,7 +78,7 @@
           <div class="Weather">星期日 晴 6°C</div>
         </div>
       </div>
-      <div class="loaction">六安市•裕安区</div>
+      <div class="loaction">六安市裕安区·六安市中茂农牧科技有限公司</div>
     </div>
 
     <input type="file" id="file-input" accept=".zip" />
@@ -95,6 +95,20 @@
       document.getElementById("button").onclick = submit;
 
       const arr = [];
+
+      function getRandomLocation() {
+        // 定义待选择的位置数组
+        var locations = [
+          "六安市裕安区·六安市中茂农牧科技有限公司",
+          "六安市裕安区·大寨子",
+          "六安市裕安区·西王老庄",
+          "六安市裕安区·徐小庄",
+        ];
+
+        // 从数组中随机选择一个位置
+        var randomIndex = Math.floor(Math.random() * locations.length);
+        return locations[randomIndex];
+      }
 
       async function submit() {
         for (let i = 0; i < arr.length; i++) {
@@ -121,7 +135,7 @@
             parsedTime
           )} ${generateRandomWeather()}`;
           document.getElementsByClassName("loaction")[0].innerText =
-            loaction?.value;
+            getRandomLocation();
 
           await addWater(url, fileName.split("/")?.pop());
         }
@@ -165,10 +179,10 @@
       function addWater(url, name) {
         return new Promise((resolve, reject) => {
           origin.onload = function () {
-            wrap.style.width = 1000 + "px";
+            wrap.style.width = 1200 + "px";
             wrap.style.height = "auto";
 
-            origin.style.width = 1000 + "px";
+            origin.style.width = 1200 + "px";
             origin.style.height = "auto";
 
             domtoimage
@@ -249,6 +263,11 @@
           reader.readAsArrayBuffer(file);
         }
       });
+      wrap.style.width = 1200 + "px";
+      wrap.style.height = "auto";
+
+      origin.style.width = 1200 + "px";
+      origin.style.height = "auto";
     </script>
   </body>
 </html>
