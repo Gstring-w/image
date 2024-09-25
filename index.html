@@ -126,19 +126,19 @@
         }
       };
 
-      function addWater(url) {
+      function addWater(url,name) {
         origin.onload = function () {
-          wrap.style.width = origin?.width / window.devicePixelRatio + "px";
-          wrap.style.height = origin?.height / window.devicePixelRatio + "px";
+          wrap.style.width = origin?.width + "px";
+          wrap.style.height = origin?.height + "px";
 
-          origin.style.width = origin?.width / window.devicePixelRatio + "px";
-          origin.style.height = origin?.height / window.devicePixelRatio + "px";
+          origin.style.width = origin?.width + "px";
+          origin.style.height = origin?.height + "px";
           domtoimage
             .toPng(wrap)
             .then(function (dataUrl) {
               const a = document.createElement("a");
               a.href = dataUrl;
-              a.download = "image.png";
+              a.download = name;
               a.click();
             })
             .catch(function (error) {
@@ -224,7 +224,7 @@
                       document.getElementsByClassName("loaction")[0].innerText =
                         loaction?.value;
 
-                      addWater(url);
+                      addWater(url, name);
                     });
                 }
               });
