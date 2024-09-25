@@ -127,13 +127,26 @@
             return;
           }
 
-          document.getElementsByClassName("date")[0].innerText = parsedTime;
+          function formatDate(inputDate) {
+            var date = new Date(inputDate);
+
+            var year = date.getFullYear();
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+
+            var formattedDate = year + "." + month + "." + day;
+
+            return formattedDate;
+          }
+
+          document.getElementsByClassName("date")[0].innerText =
+            formatDate(parsedTime);
           // 生成一个随机天气信息
           document.getElementsByClassName(
             "Weather"
           )[0].innerText = `${getChineseDayOfWeek(
             parsedTime
-          )} ${generateRandomWeather()}`;
+          )} ${generateRandomWeather(getMonth(parsedTime))}`;
           document.getElementsByClassName("loaction")[0].innerText =
             getRandomLocation();
 
@@ -157,13 +170,47 @@
         return days[dayOfWeek];
       }
 
-      function generateRandomWeather() {
+      function getMonth(dateString) {
+        const date = new Date(dateString);
+        return date.getMonth();
+      }
+
+      function getRandomTemperatureByMonth(month) {
+        // 定义不同月份的温度范围
+        var temperatureRanges = {
+          1: { min: -10, max: 5 }, // 1月温度范围
+          2: { min: -5, max: 10 }, // 2月温度范围
+          3: { min: 0, max: 15 }, // 3月温度范围
+          4: { min: 5, max: 20 }, // 4月温度范围
+          5: { min: 10, max: 25 }, // 5月温度范围
+          6: { min: 15, max: 30 }, // 6月温度范围
+          7: { min: 20, max: 35 }, // 7月温度范围
+          8: { min: 25, max: 35 }, // 8月温度范围
+          9: { min: 15, max: 30 }, // 9月温度范围
+          10: { min: 10, max: 20 }, // 10月温度范围
+          11: { min: 0, max: 10 }, // 11月温度范围
+          12: { min: -5, max: 5 }, // 12月温度范围
+        };
+
+        // 获取指定月份的温度范围
+        var range = temperatureRanges[month];
+
+        if (range) {
+          // 生成随机温度值
+          var randomTemperature =
+            Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+          return randomTemperature;
+        } else {
+          return "无效的月份";
+        }
+      }
+
+      function generateRandomWeather(month) {
         const weatherTypes = ["晴", "多云"]; // 定义天气类型
-        const temperature = Math.floor(Math.random() * 30); // 生成 -10°C 到 20°C 之间的随机温度
 
         const randomWeather =
           weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
-        return `${randomWeather} ${temperature}°C`;
+        return `${randomWeather} ${getRandomTemperatureByMonth(month)}°C`;
       }
 
       radio.onclick = () => {
