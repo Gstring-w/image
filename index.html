@@ -1,330 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/src/dom-to-image.js"></script>
-    <style>
-      .wrap {
-        position: relative;
-        font-size: 0px;
-      }
-      .water {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 100px;
-        object-fit: cover;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
 
-      .time {
-        left: 30px;
-        bottom: 55px;
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/src/dom-to-image.js"></script>
+  <style>
+    .wrap {
+      position: relative;
+      font-size: 0px;
+    }
 
-        position: absolute;
+    .water {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 100px;
+      object-fit: cover;
+    }
 
-        color: #fff;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        gap: 20px;
-      }
+    .time {
+      left: 30px;
+      bottom: 55px;
 
-      .main {
-        font-size: 80px;
-        color: #fffffe;
-        font-family: "Adobe Heiti Std";
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
-      .yellow {
-        width: 10px;
-        height: 80px;
-        background-color: rgb(251, 154, 50);
-      }
-      .sub {
-        font-size: 28px;
-        color: #fffffe;
-        font-family: "Adobe Heiti Std";
-        display: flex;
-        flex-direction: column;
-        white-space: nowrap;
-        justify-content: space-between;
-        gap: 10px;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
+      position: absolute;
 
-      .loaction {
-        font-size: 28px;
-        color: #fffffe;
-        font-family: "Adobe Heiti Std";
-        position: absolute;
-        bottom: 24px;
-        left: 30px;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
-    </style>
-  </head>
-  <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
-  <body>
-    <div class="wrap" id="wrap">
-      <img src="./image.jpeg" id="origin" />
-      <img src="./water.png" class="water" />
-      <div class="time">
-        <div class="main">12:56</div>
-        <div class="yellow"></div>
-        <div class="sub">
-          <div class="date">2022-01-02</div>
-          <div class="Weather">星期日 晴 6°C</div>
-        </div>
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .main {
+      font-size: 80px;
+      color: #fffffe;
+      font-family: "Adobe Heiti Std";
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .yellow {
+      width: 10px;
+      height: 80px;
+      background-color: rgb(251, 154, 50);
+    }
+
+    .sub {
+      font-size: 28px;
+      color: #fffffe;
+      font-family: "Adobe Heiti Std";
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+      justify-content: space-between;
+      gap: 10px;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .loaction {
+      font-size: 28px;
+      color: #fffffe;
+      font-family: "Adobe Heiti Std";
+      position: absolute;
+      bottom: 24px;
+      left: 30px;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
+
+<body>
+  <div class="wrap" id="wrap">
+    <img src="./image.jpeg" id="origin" />
+    <img src="./water.png" class="water" />
+    <div class="time">
+      <div class="main">12:56</div>
+      <div class="yellow"></div>
+      <div class="sub">
+        <div class="date">2022-01-02</div>
+        <div class="Weather">星期日 晴 6°C</div>
       </div>
-      <div class="loaction">六安市裕安区·六安市中茂农牧科技有限公司</div>
     </div>
+    <div class="loaction">六安市裕安区·六安市中茂农牧科技有限公司</div>
+  </div>
 
-    <input type="file" id="file-input" accept=".zip" />
-    <input id="loaction" /> 地址
-    <input type="radio" id="radio" name="water" value="1" /> 黑夜
-    <button onclick="submit" id="button">提交</button>
-    <div id="text"></div>
-    <script>
-      const wrap = document.getElementById("wrap");
-      const origin = document.getElementById("origin");
-      const fileInput = document.getElementById("file-input");
-      const radio = document.getElementById("radio");
-      const loaction = document.getElementById("loaction");
-      const text = document.getElementById("text");
+  <input type="file" id="file-input" accept=".zip" />
+  <input id="loaction" /> 地址
+  <input type="radio" id="radio" name="water" value="1" /> 黑夜
+  <button onclick="submit" id="button">提交</button>
+  <div id="text"></div>
+  <script>
+    const wrap = document.getElementById("wrap");
+    const origin = document.getElementById("origin");
+    const fileInput = document.getElementById("file-input");
+    const radio = document.getElementById("radio");
+    const loaction = document.getElementById("loaction");
+    const text = document.getElementById("text");
 
-      document.getElementById("button").onclick = submit;
+    document.getElementById("button").onclick = submit;
 
-      const arr = [];
+    const arr = [];
 
-      function getRandomLocation() {
-        // 定义待选择的位置数组
-        var locations = [
-          "六安市裕安区·丁南村",
-          "六安市裕安区·高峰村",
-          "六安市裕安区·光明村",
-          "六安市裕安区·西河村",
-          "六安市裕安区·车畈村",
-          "六安市裕安区·云居村",
-        ];
+    function getRandomLocation() {
+      // 定义待选择的位置数组
+      var locations = [
+        "六安市裕安区·丁南村",
+        "六安市裕安区·高峰村",
+        "六安市裕安区·光明村",
+        "六安市裕安区·西河村",
+        "六安市裕安区·车畈村",
+        "六安市裕安区·云居村",
+      ];
 
-        // 从数组中随机选择一个位置
-        var randomIndex = Math.floor(Math.random() * locations.length);
-        return locations[randomIndex];
-      }
+      // 从数组中随机选择一个位置
+      var randomIndex = Math.floor(Math.random() * locations.length);
+      return locations[randomIndex];
+    }
 
-      let current = 0;
-      let errorList = [];
-      async function submit() {
-        for (let i = 0; i < arr.length; i++) {
-          const { url, name: fileName } = arr[i];
-          const name = fileName.split("/")?.pop()?.split(".");
-          // 时间
-          document.getElementsByClassName("main")[0].innerText =
-            radio.value !== "1"
-              ? generateRandomEveningTime()
-              : generateRandomTime();
-          const parsedTime = parseCustomTime(fileName.split("/")?.pop());
-          if (!parsedTime) {
-            console.error("日期解析失败", name);
-            return;
-          }
-
-          function formatDate(inputDate) {
-            var date = new Date(inputDate);
-
-            var year = date.getFullYear();
-            var month = ("0" + (date.getMonth() + 1)).slice(-2);
-            var day = ("0" + date.getDate()).slice(-2);
-
-            var formattedDate = year + "." + month + "." + day;
-
-            return formattedDate;
-          }
-
-          document.getElementsByClassName("date")[0].innerText =
-            formatDate(parsedTime);
-          // 生成一个随机天气信息
-          document.getElementsByClassName(
-            "Weather"
-          )[0].innerText = `${getChineseDayOfWeek(
-            parsedTime
-          )} ${generateRandomWeather(getMonth(parsedTime))}`;
-          document.getElementsByClassName("loaction")[0].innerText =
-            getRandomLocation();
-
-          try {
-            await addWater(url, fileName.split("/")?.pop());
-            current++;
-            text?.innerText = '进度' + Math.floor(current / arr.length * 100);
-          } catch (error) {
-            errorList.push(fileName);
-            console.error("添加水印失败", error);
-          }
+    let current = 0;
+    let errorList = [];
+    async function submit() {
+      for (let i = 0; i < arr.length; i++) {
+        const { url, name: fileName } = arr[i];
+        const name = fileName.split("/")?.pop()?.split(".");
+        // 时间
+        document.getElementsByClassName("main")[0].innerText =
+          radio.value !== "1"
+            ? generateRandomEveningTime()
+            : generateRandomTime();
+        const parsedTime = parseCustomTime(fileName.split("/")?.pop());
+        if (!parsedTime) {
+          console.error("日期解析失败", name);
+          return;
         }
-        text?.innerText = '结束：总共有：' + arr?.length + '成功:' + current + '失败:' + errorList?.join(',');
-      }
 
-      function getChineseDayOfWeek(dateString) {
-        const days = [
-          "星期日",
-          "星期一",
-          "星期二",
-          "星期三",
-          "星期四",
-          "星期五",
-          "星期六",
-        ];
-        const date = new Date(dateString);
-        const dayOfWeek = date.getDay();
+        function formatDate(inputDate) {
+          var date = new Date(inputDate);
 
-        return days[dayOfWeek];
-      }
+          var year = date.getFullYear();
+          var month = ("0" + (date.getMonth() + 1)).slice(-2);
+          var day = ("0" + date.getDate()).slice(-2);
 
-      function getMonth(dateString) {
-        const date = new Date(dateString);
-        return date.getMonth();
-      }
+          var formattedDate = year + "." + month + "." + day;
 
-      function getRandomTemperatureByMonth(month) {
-        // 定义不同月份的温度范围
-        var temperatureRanges = {
-          1: { min: 1, max: 5 }, // 1月温度范围
-          2: { min: 2, max: 8 }, // 2月温度范围
-          3: { min: 9, max: 15 }, // 3月温度范围
-          4: { min: 11, max: 15 }, // 4月温度范围
-          5: { min: 16, max: 20 }, // 5月温度范围
-          6: { min: 29, max: 35 }, // 6月温度范围
-          7: { min: 30, max: 35 }, // 7月温度范围
-          8: { min: 30, max: 34 }, // 8月温度范围
-          9: { min: 17, max: 24 }, // 9月温度范围
-          10: { min: 16, max: 20 }, // 10月温度范围
-          11: { min: 6, max: 10 }, // 11月温度范围
-          12: { min: 1, max: 5 }, // 12月温度范围
-        };
+          return formattedDate;
+        }
 
-        // 获取指定月份的温度范围
-        var range = temperatureRanges[month];
+        document.getElementsByClassName("date")[0].innerText =
+          formatDate(parsedTime);
+        // 生成一个随机天气信息
+        document.getElementsByClassName(
+          "Weather"
+        )[0].innerText = `${getChineseDayOfWeek(
+          parsedTime
+        )} ${generateRandomWeather(getMonth(parsedTime))}`;
+        document.getElementsByClassName("loaction")[0].innerText =
+          getRandomLocation();
 
-        if (range) {
-          // 生成随机温度值
-          var randomTemperature =
-            Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
-          return randomTemperature;
-        } else {
-          return "无效的月份";
+        try {
+          await addWater(url, fileName.split("/")?.pop());
+          current++;
+          text.innerText = '进度' + Math.floor(current / arr.length * 100);
+        } catch (error) {
+          errorList.push(fileName);
+          console.error("添加水印失败", error);
         }
       }
+      text.innerText = '结束：总共有：' + arr?.length + '成功:' + current + '失败:' + errorList?.join(',');
+    }
 
-      function generateRandomWeather(month) {
-        const weatherTypes = ["晴", "多云"]; // 定义天气类型
+    function getChineseDayOfWeek(dateString) {
+      const days = [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ];
+      const date = new Date(dateString);
+      const dayOfWeek = date.getDay();
 
-        const randomWeather =
-          weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
-        return `${randomWeather} ${getRandomTemperatureByMonth(month)}°C`;
-      }
+      return days[dayOfWeek];
+    }
 
-      radio.onclick = () => {
-        if (radio.value === "1") {
-          radio.value = "2";
-          radio.checked = true;
-        } else {
-          radio.value = "1";
-          radio.checked = false;
-        }
+    function getMonth(dateString) {
+      const date = new Date(dateString);
+      return date.getMonth();
+    }
+
+    function getRandomTemperatureByMonth(month) {
+      // 定义不同月份的温度范围
+      var temperatureRanges = {
+        1: { min: 1, max: 5 }, // 1月温度范围
+        2: { min: 2, max: 8 }, // 2月温度范围
+        3: { min: 9, max: 15 }, // 3月温度范围
+        4: { min: 11, max: 15 }, // 4月温度范围
+        5: { min: 16, max: 20 }, // 5月温度范围
+        6: { min: 29, max: 35 }, // 6月温度范围
+        7: { min: 30, max: 35 }, // 7月温度范围
+        8: { min: 30, max: 34 }, // 8月温度范围
+        9: { min: 17, max: 24 }, // 9月温度范围
+        10: { min: 16, max: 20 }, // 10月温度范围
+        11: { min: 6, max: 10 }, // 11月温度范围
+        12: { min: 1, max: 5 }, // 12月温度范围
       };
 
-      function addWater(url, name) {
-        return new Promise((resolve, reject) => {
-          origin.onload = function () {
-            wrap.style.width = 1200 + "px";
-            wrap.style.height = "auto";
+      // 获取指定月份的温度范围
+      var range = temperatureRanges[month];
 
-            origin.style.width = 1200 + "px";
-            origin.style.height = "auto";
-
-            domtoimage
-              .toPng(wrap)
-              .then(function (dataUrl) {
-                const a = document.createElement("a");
-                a.href = dataUrl;
-                a.download = name;
-                a.click();
-                resolve();
-              })
-              .catch(function (error) {
-                console.error("oops, something went wrong!", error);
-              });
-          };
-          origin.src = url;
-        });
+      if (range) {
+        // 生成随机温度值
+        var randomTemperature =
+          Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+        return randomTemperature;
+      } else {
+        return "无效的月份";
       }
+    }
 
-      function generateRandomEveningTime() {
-        const hours = Math.floor(Math.random() * 4) + 19; // 生成 19 到 22 之间的随机小时数
-        const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
+    function generateRandomWeather(month) {
+      const weatherTypes = ["晴", "多云"]; // 定义天气类型
 
-        const formattedHours = hours < 10 ? "0" + hours : hours;
-        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+      const randomWeather =
+        weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+      return `${randomWeather} ${getRandomTemperatureByMonth(month)}°C`;
+    }
 
-        return `${formattedHours}:${formattedMinutes}`;
+    radio.onclick = () => {
+      if (radio.value === "1") {
+        radio.value = "2";
+        radio.checked = true;
+      } else {
+        radio.value = "1";
+        radio.checked = false;
       }
+    };
 
-      function generateRandomTime() {
-        const hours = Math.floor(Math.random() * 11) + 7; // 生成 7 到 17 之间的随机小时数
-        const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
-        const formattedHours = hours < 10 ? "0" + hours : hours;
-        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
-        return `${formattedHours}:${formattedMinutes}`;
-      }
+    function addWater(url, name) {
+      return new Promise((resolve, reject) => {
+        origin.onload = function () {
+          wrap.style.width = 1200 + "px";
+          wrap.style.height = "auto";
 
-      function parseCustomTime(input) {
-        // 定义正则表达式模式
-        var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
+          origin.style.width = 1200 + "px";
+          origin.style.height = "auto";
 
-        // 在文件名中搜索匹配的日期部分
-        var match = input.match(pattern);
-
-        let parts;
-        // 如果有匹配的结果，则提取日期部分
-        if (match) {
-          var date = match[0];
-          return date;
-        }
-      }
-
-      fileInput.addEventListener("change", function () {
-        const file = fileInput.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            const zipData = e.target.result;
-            JSZip.loadAsync(zipData).then(function (zip) {
-              zip.forEach(function (relativePath, zipEntry) {
-                if (!zipEntry.dir && /\.(jpg|jpeg|png)$/i.test(zipEntry.name)) {
-                  zip
-                    .file(zipEntry.name)
-                    .async("blob")
-                    .then(function (blob) {
-                      const url = URL.createObjectURL(blob);
-                      arr.push({ name: zipEntry.name, url });
-                      text?.innerText = '上传了' + arr?.length;
-                    });
-                }
-              });
+          domtoimage
+            .toPng(wrap)
+            .then(function (dataUrl) {
+              const a = document.createElement("a");
+              a.href = dataUrl;
+              a.download = name;
+              a.click();
+              resolve();
+            })
+            .catch(function (error) {
+              console.error("oops, something went wrong!", error);
             });
-          };
-          reader.readAsArrayBuffer(file);
-        }
+        };
+        origin.src = url;
       });
+    }
+
+    function generateRandomEveningTime() {
+      const hours = Math.floor(Math.random() * 4) + 19; // 生成 19 到 22 之间的随机小时数
+      const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
+
+      const formattedHours = hours < 10 ? "0" + hours : hours;
+      const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+      return `${formattedHours}:${formattedMinutes}`;
+    }
+
+    function generateRandomTime() {
+      const hours = Math.floor(Math.random() * 11) + 7; // 生成 7 到 17 之间的随机小时数
+      const minutes = Math.floor(Math.random() * 60); // 生成 0 到 59 之间的随机分钟数
+      const formattedHours = hours < 10 ? "0" + hours : hours;
+      const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+      return `${formattedHours}:${formattedMinutes}`;
+    }
+
+    function parseCustomTime(input) {
+      // 定义正则表达式模式
+      var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
+
+      // 在文件名中搜索匹配的日期部分
+      var match = input.match(pattern);
+
+      let parts;
+      // 如果有匹配的结果，则提取日期部分
+      if (match) {
+        var date = match[0];
+        return date;
+      }
+    }
+
+    fileInput.addEventListener("change", function () {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const zipData = e.target.result;
+          JSZip.loadAsync(zipData).then(function (zip) {
+            zip.forEach(function (relativePath, zipEntry) {
+              if (!zipEntry.dir && /\.(jpg|jpeg|png)$/i.test(zipEntry.name)) {
+                zip
+                  .file(zipEntry.name)
+                  .async("blob")
+                  .then(function (blob) {
+                    const url = URL.createObjectURL(blob);
+                    arr.push({ name: zipEntry.name, url });
+                    text.innerText = '上传了' + arr?.length;
+                  });
+              }
+            });
+          });
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    });
+
+    window.onload = () => {
       wrap.style.width = 1200 + "px";
       wrap.style.height = "auto";
 
       origin.style.width = 1200 + "px";
       origin.style.height = "auto";
-      console.log(1);
-    </script>
-  </body>
+      // 根据当前的显示器，缩小图片
+      wrap.style.scale = 1 / window.devicePixelRatio;
+    }
+  </script>
+</body>
+
 </html>
