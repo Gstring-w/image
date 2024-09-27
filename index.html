@@ -86,12 +86,14 @@
     <input id="loaction" /> 地址
     <input type="radio" id="radio" name="water" value="1" /> 黑夜
     <button onclick="submit" id="button">提交</button>
+    <div id="text"></div>
     <script>
       const wrap = document.getElementById("wrap");
       const origin = document.getElementById("origin");
       const fileInput = document.getElementById("file-input");
       const radio = document.getElementById("radio");
       const loaction = document.getElementById("loaction");
+      const text = document.getElementById("text");
 
       document.getElementById("button").onclick = submit;
 
@@ -100,10 +102,12 @@
       function getRandomLocation() {
         // 定义待选择的位置数组
         var locations = [
-          "六安市裕安区·六安市中茂农牧科技有限公司",
-          "六安市裕安区·大寨子",
-          "六安市裕安区·西王老庄",
-          "六安市裕安区·徐小庄",
+          "六安市裕安区·丁南村",
+          "六安市裕安区·高峰村",
+          "六安市裕安区·光明村",
+          "六安市裕安区·西河村",
+          "六安市裕安区·车畈村",
+          "六安市裕安区·云居村",
         ];
 
         // 从数组中随机选择一个位置
@@ -111,6 +115,8 @@
         return locations[randomIndex];
       }
 
+      let current = 0;
+      let errorList = [];
       async function submit() {
         for (let i = 0; i < arr.length; i++) {
           const { url, name: fileName } = arr[i];
@@ -120,8 +126,6 @@
             radio.value !== "1"
               ? generateRandomEveningTime()
               : generateRandomTime();
-          // 日期
-          console.log(fileName.split("/")?.pop(), fileName);
           const parsedTime = parseCustomTime(fileName.split("/")?.pop());
           if (!parsedTime) {
             console.error("日期解析失败", name);
@@ -151,8 +155,16 @@
           document.getElementsByClassName("loaction")[0].innerText =
             getRandomLocation();
 
-          await addWater(url, fileName.split("/")?.pop());
+          try {
+            await addWater(url, fileName.split("/")?.pop());
+            current++;
+            text?.innerText = '进度' + Math.floor(current / arr.length * 100);
+          } catch (error) {
+            errorList.push(fileName);
+            console.error("添加水印失败", error);
+          }
         }
+        text?.innerText = '结束：总共有：' + arr?.length + '成功:' + current + '失败:' + errorList?.join(',');
       }
 
       function getChineseDayOfWeek(dateString) {
@@ -269,7 +281,6 @@
       }
 
       function parseCustomTime(input) {
-        console.log(input);
         // 定义正则表达式模式
         var pattern = /(\d{4}\.\d{1,2}\.\d{1,2})/;
 
@@ -299,7 +310,7 @@
                     .then(function (blob) {
                       const url = URL.createObjectURL(blob);
                       arr.push({ name: zipEntry.name, url });
-                      console.log(arr);
+                      text?.innerText = '上传了' + arr?.length;
                     });
                 }
               });
@@ -313,7 +324,7 @@
 
       origin.style.width = 1200 + "px";
       origin.style.height = "auto";
-      console.log(1)
+      console.log(1);
     </script>
   </body>
 </html>
